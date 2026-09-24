@@ -1,0 +1,107 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>classroom.google.com/c/7xQ9m2Lp4Zk</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#eef2ff;color:#172033}header{background:#4f46e5;color:white;text-align:center;padding:32px 16px}header h1{margin:0 0 8px}main{max-width:1000px;margin:28px auto;padding:0 16px}.search{width:100%;padding:15px;border:2px solid #c7d2fe;border-radius:12px;font-size:17px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.filters button{border:0;border-radius:9px;padding:10px 14px;background:white;color:#3730a3;font-weight:bold;cursor:pointer}.filters .active,.filters button:hover{background:#4f46e5;color:white}.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.game{background:white;padding:20px;border-radius:15px;box-shadow:0 5px 16px #0001}.icon{font-size:34px}.tag{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:20px;padding:5px 9px;font-size:12px}.game p{color:#64748b;min-height:42px}.play{display:block;text-align:center;background:#4f46e5;color:white;text-decoration:none;padding:11px;border-radius:9px;font-weight:bold}.empty{text-align:center;padding:30px;color:#64748b;display:none}
+</style></head><body><header><h1>classroom.google.com/c/7xQ9m2Lp4Zk</h1><p>Search for a game or filter by category.</p></header>
+<section id="builtIn" style="max-width:1000px;margin:24px auto;padding:0 16px">
+  <h2 style="margin-bottom:8px">Built-in Games</h2>
+  <p style="color:#64748b;margin-top:0">These mini games run directly on this page and do not need an outside game website.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+    <div style="background:white;padding:20px;border-radius:15px;box-shadow:0 5px 16px #0001">
+      <h3>🎯 Click Counter</h3><p>Score as many clicks as you can.</p>
+      <div id="clickScore" style="font-size:30px;font-weight:bold;margin:12px 0">0</div>
+      <button onclick="addClick()" style="padding:11px 16px;border:0;border-radius:9px;background:#4f46e5;color:white;font-weight:bold">Click!</button>
+      <button onclick="resetClick()" style="padding:11px 16px;border:0;border-radius:9px">Reset</button>
+    </div>
+
+    <div style="background:white;padding:20px;border-radius:15px;box-shadow:0 5px 16px #0001">
+      <h3>❌⭕ Tic-Tac-Toe</h3>
+      <div id="tttStatus" style="margin:10px 0">X's turn</div>
+      <div id="tttBoard" style="display:grid;grid-template-columns:repeat(3,60px);gap:5px"></div>
+      <button onclick="resetTTT()" style="margin-top:12px;padding:9px 13px;border:0;border-radius:9px">New Game</button>
+    </div>
+
+    <div style="background:white;padding:20px;border-radius:15px;box-shadow:0 5px 16px #0001">
+      <h3>🧠 Number Guess</h3><p>Guess a number from 1 to 100.</p>
+      <input id="guessInput" type="number" min="1" max="100" style="padding:10px;width:100%;border:1px solid #cbd5e1;border-radius:8px">
+      <button onclick="checkGuess()" style="margin-top:10px;padding:10px 14px;border:0;border-radius:9px;background:#4f46e5;color:white;font-weight:bold">Guess</button>
+      <button onclick="newGuess()" style="margin-top:10px;padding:10px 14px;border:0;border-radius:9px">New Number</button>
+      <div id="guessStatus" style="margin-top:10px">Make your first guess.</div>
+    </div>
+  </div>
+</section>
+<script>
+let clicks=0;
+function addClick(){clicks++;document.getElementById('clickScore').textContent=clicks}
+function resetClick(){clicks=0;document.getElementById('clickScore').textContent=0}
+
+let board=Array(9).fill(''), turn='X', gameOver=false;
+function renderTTT(){
+ const b=document.getElementById('tttBoard'); b.innerHTML='';
+ board.forEach((v,i)=>{
+  const x=document.createElement('button'); x.textContent=v;
+  x.style='width:60px;height:60px;font-size:24px;font-weight:bold;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;cursor:pointer';
+  x.onclick=()=>moveTTT(i); b.appendChild(x);
+ });
+ document.getElementById('tttStatus').textContent=gameOver?'Game over':turn+"'s turn";
+}
+function moveTTT(i){
+ if(board[i]||gameOver)return;
+ board[i]=turn;
+ if(winTTT(turn)){gameOver=true;document.getElementById('tttStatus').textContent=turn+' wins!'}
+ else if(board.every(Boolean)){gameOver=true;document.getElementById('tttStatus').textContent="Tie game!"}
+ else turn=turn==='X'?'O':'X';
+ renderTTT();
+}
+function winTTT(p){return [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(a=>a.every(i=>board[i]===p))}
+function resetTTT(){board=Array(9).fill('');turn='X';gameOver=false;renderTTT()}
+
+let secret=Math.floor(Math.random()*100)+1;
+function checkGuess(){
+ const n=Number(document.getElementById('guessInput').value), s=document.getElementById('guessStatus');
+ if(!n){s.textContent='Enter a number from 1 to 100.';return}
+ if(n===secret)s.textContent='Correct! You got it!';
+ else s.textContent=n<secret?'Too low.':'Too high.';
+}
+function newGuess(){secret=Math.floor(Math.random()*100)+1;document.getElementById('guessInput').value='';document.getElementById('guessStatus').textContent='New number selected.'}
+resetTTT();
+</script>
+<main>
+<input id="search" class="search" placeholder="Search games..." type="search">
+<div class="filters"><button class="active" data-filter="all">All</button><button data-filter="puzzle">Puzzle</button><button data-filter="arcade">Arcade</button><button data-filter="strategy">Strategy</button><button data-filter="coding">Coding</button><button data-filter="typing">Typing</button></div>
+<section class="games" id="games">
+<article class="game" data-category="puzzle" data-search="2048 puzzle numbers"><div class="icon">🔢</div><span class="tag">Puzzle</span><h2>2048</h2><p>Combine matching numbers.</p><a class="play" href="https://play2048.co/" target="_blank">Play</a></article>
+<article class="game" data-category="arcade" data-search="poki arcade browser games"><div class="icon">🕹️</div><span class="tag">Arcade</span><h2>Poki</h2><p>Browse browser games.</p><a class="play" href="https://poki.com/" target="_blank">Play</a></article>
+<article class="game" data-category="arcade" data-search="coolmath games puzzle strategy arcade"><div class="icon">🎯</div><span class="tag">Arcade</span><h2>Coolmath Games</h2><p>Find puzzles and arcade games.</p><a class="play" href="https://www.coolmathgames.com/" target="_blank">Play</a></article>
+<article class="game" data-category="coding" data-search="scratch coding games"><div class="icon">🐱</div><span class="tag">Coding</span><h2>Scratch</h2><p>Play and explore Scratch projects.</p><a class="play" href="https://scratch.mit.edu/games/" target="_blank">Play</a></article>
+<article class="game" data-category="coding" data-search="code org game lab coding"><div class="icon">💻</div><span class="tag">Coding</span><h2>Code.org Game Lab</h2><p>Play and create coding projects.</p><a class="play" href="https://studio.code.org/projects/gamelab" target="_blank">Play</a></article>
+<article class="game" data-category="typing" data-search="nitro type typing racing"><div class="icon">⌨️</div><span class="tag">Typing</span><h2>Nitro Type</h2><p>Practice typing while racing.</p><a class="play" href="https://www.nitrotype.com/" target="_blank">Play</a></article>
+<article class="game" data-category="strategy" data-search="chess strategy board"><div class="icon">♟️</div><span class="tag">Strategy</span><h2>Chess</h2><p>Play chess and practice strategy.</p><a class="play" href="https://www.chess.com/play" target="_blank">Play</a></article>
+
+<article class="game" data-category="puzzle" data-search="wordle word puzzle vocabulary"><div class="icon">🟩</div><span class="tag">Puzzle</span><h2>Wordle</h2><p>Guess the hidden five-letter word.</p><a class="play" href="https://www.nytimes.com/games/wordle/index.html" target="_blank">Play</a></article>
+<article class="game" data-category="strategy" data-search="checkers board strategy"><div class="icon">🔴</div><span class="tag">Strategy</span><h2>Checkers</h2><p>Play the classic board game online.</p><a class="play" href="https://www.coolmathgames.com/0-checkers" target="_blank">Play</a></article>
+<article class="game" data-category="puzzle" data-search="sudoku numbers logic puzzle"><div class="icon">🔢</div><span class="tag">Puzzle</span><h2>Sudoku</h2><p>Fill the grid using logic and numbers.</p><a class="play" href="https://sudoku.com/" target="_blank">Play</a></article>
+<article class="game" data-category="arcade" data-search="snake arcade classic"><div class="icon">🐍</div><span class="tag">Arcade</span><h2>Snake</h2><p>Grow your snake without hitting the walls.</p><a class="play" href="https://playsnake.org/" target="_blank">Play</a></article>
+<article class="game" data-category="arcade" data-search="flappy bird arcade flying"><div class="icon">🐦</div><span class="tag">Arcade</span><h2>Flappy Bird</h2><p>Guide the bird through the pipes.</p><a class="play" href="https://flappybird.io/" target="_blank">Play</a></article>
+<article class="game" data-category="puzzle" data-search="minesweeper logic puzzle mines"><div class="icon">💣</div><span class="tag">Puzzle</span><h2>Minesweeper</h2><p>Clear the board while avoiding hidden mines.</p><a class="play" href="https://minesweeper.online/" target="_blank">Play</a></article>
+<article class="game" data-category="arcade" data-search="tetris blocks puzzle arcade"><div class="icon">🧱</div><span class="tag">Arcade</span><h2>Tetris</h2><p>Arrange falling blocks to clear lines.</p><a class="play" href="https://tetris.com/play-tetris" target="_blank">Play</a></article>
+<article class="game" data-category="strategy" data-search="connect four strategy board"><div class="icon">🔵</div><span class="tag">Strategy</span><h2>Connect Four</h2><p>Connect four pieces before your opponent.</p><a class="play" href="https://www.coolmathgames.com/0-connect-four" target="_blank">Play</a></article>
+<article class="game" data-category="typing" data-search="typing club keyboard typing practice"><div class="icon">⌨️</div><span class="tag">Typing</span><h2>TypingClub</h2><p>Practice keyboard skills with typing lessons.</p><a class="play" href="https://www.typingclub.com/" target="_blank">Play</a></article>
+<article class="game" data-category="coding" data-search="coding game javascript programming"><div class="icon">🧑‍💻</div><span class="tag">Coding</span><h2>CodeCombat</h2><p>Learn programming through game levels.</p><a class="play" href="https://codecombat.com/" target="_blank">Play</a></article>
+<article class="game" data-category="puzzle" data-search="geoguessr geography map guessing"><div class="icon">🌎</div><span class="tag">Puzzle</span><h2>GeoGuessr</h2><p>Test your geography skills with locations.</p><a class="play" href="https://www.geoguessr.com/" target="_blank">Play</a></article>
+<article class="game" data-category="arcade" data-search="agar io multiplayer arcade cells"><div class="icon">🟣</div><span class="tag">Arcade</span><h2>Agar.io</h2><p>Grow your cell by collecting smaller cells.</p><a class="play" href="https://agar.io/" target="_blank">Play</a></article>
+
+<article class="game" data-category="puzzle" data-search="hextris hexagon puzzle arcade"><div class="icon">⬡</div><span class="tag">Puzzle</span><h2>Hextris</h2><p>Match colored pieces around a hexagon.</p><a class="play" href="https://hextris.io/" target="_blank">Play</a></article>
+<article class="game" data-category="arcade" data-search="pacman maze arcade classic"><div class="icon">🟡</div><span class="tag">Arcade</span><h2>Pac-Man</h2><p>Navigate the maze and collect dots.</p><a class="play" href="https://www.google.com/search?q=play+pac-man" target="_blank">Play</a></article>
+<article class="game" data-category="puzzle" data-search="nonogram picross logic puzzle"><div class="icon">🧩</div><span class="tag">Puzzle</span><h2>Nonogram</h2><p>Use number clues to reveal a picture.</p><a class="play" href="https://www.nonograms.org/" target="_blank">Play</a></article>
+<article class="game" data-category="strategy" data-search="reversi othello strategy board"><div class="icon">⚫</div><span class="tag">Strategy</span><h2>Reversi</h2><p>Capture pieces and control the board.</p><a class="play" href="https://www.coolmathgames.com/0-reversi" target="_blank">Play</a></article>
+<article class="game" data-category="arcade" data-search="cookie clicker idle clicking"><div class="icon">🍪</div><span class="tag">Arcade</span><h2>Cookie Clicker</h2><p>Build a giant cookie production empire.</p><a class="play" href="https://orteil.dashnet.org/cookieclicker/" target="_blank">Play</a></article>
+<article class="game" data-category="puzzle" data-search="little alchemy elements crafting"><div class="icon">⚗️</div><span class="tag">Puzzle</span><h2>Little Alchemy</h2><p>Combine elements to discover new items.</p><a class="play" href="https://littlealchemy.com/" target="_blank">Play</a></article>
+<article class="game" data-category="arcade" data-search="crossy road crossing arcade"><div class="icon">🐔</div><span class="tag">Arcade</span><h2>Crossy Road</h2><p>Cross roads and rivers without getting hit.</p><a class="play" href="https://poki.com/en/g/crossy-road" target="_blank">Play</a></article>
+<article class="game" data-category="strategy" data-search="tower defense strategy defense"><div class="icon">🏰</div><span class="tag">Strategy</span><h2>Tower Defense</h2><p>Place defenses and stop incoming enemies.</p><a class="play" href="https://www.crazygames.com/t/tower-defense" target="_blank">Play</a></article>
+<article class="game" data-category="coding" data-search="python coding programming practice"><div class="icon">🐍</div><span class="tag">Coding</span><h2>Python Practice</h2><p>Practice Python programming in your browser.</p><a class="play" href="https://www.programiz.com/python-programming/online-compiler/" target="_blank">Play</a></article>
+<article class="game" data-category="puzzle" data-search="word search letters vocabulary"><div class="icon">🔤</div><span class="tag">Puzzle</span><h2>Word Search</h2><p>Find hidden words in a letter grid.</p><a class="play" href="https://thewordsearch.com/" target="_blank">Play</a></article>
+</section><div id="empty" class="empty">No games match your search.</div></main>
+<script>
+const s=document.getElementById("search"),cards=[...document.querySelectorAll(".game")],buttons=[...document.querySelectorAll(".filters button")],empty=document.getElementById("empty");let cat="all";
+function update(){let q=s.value.toLowerCase().trim(),n=0;cards.forEach(c=>{let show=c.dataset.search.includes(q)&&(cat==="all"||c.dataset.category===cat);c.style.display=show?"block":"none";if(show)n++});empty.style.display=n?"none":"block"}
+s.oninput=update;buttons.forEach(b=>b.onclick=()=>{buttons.forEach(x=>x.classList.remove("active"));b.classList.add("active");cat=b.dataset.filter;update()});
+</script></body></html>
